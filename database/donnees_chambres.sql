@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+
 ALTER TABLE chambre AUTO_INCREMENT = 1;
 
 INSERT INTO chambre (nom, fantome, description, niveau_frayeur, prix_nuit, photo) VALUES
