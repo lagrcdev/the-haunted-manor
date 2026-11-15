@@ -63,4 +63,8 @@ if ($methode === 'DELETE' && preg_match('#^/api/reservations/([0-9]+)$#', $chemi
     ReservationController::annuler((int) $morceaux[1]);
 }
 
+if ($methode === 'GET' && $chemin === '/api/admin/reservations') {
+    ReservationController::toutes();
+}
+
 Reponse::json(['erreur' => 'Adresse introuvable'], 404);

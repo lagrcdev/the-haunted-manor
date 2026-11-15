@@ -12,4 +12,16 @@ class Auth
 
         return (int) $_SESSION['utilisateur_id'];
     }
+
+    public static function exigerAdmin(): int
+    {
+        $utilisateurId = self::exigerConnexion();
+
+        if (($_SESSION['role'] ?? '') !== 'admin') {
+            Reponse::json(['erreur' => 'Accès interdit'], 403);
+        }
+
+        return $utilisateurId;
+    }
+
 }

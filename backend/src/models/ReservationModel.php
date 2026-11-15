@@ -90,4 +90,21 @@ class ReservationModel
         return $requete->rowCount() > 0;
     }
 
+    public static function toutes(): array
+    {
+        $pdo = Database::getConnexion();
+
+        $requete = $pdo->query(
+            'SELECT r.id, r.date_arrivee, r.date_depart, r.prix_total, r.statut,
+                    c.nom AS chambre, u.nom AS client
+             FROM reservation r
+             INNER JOIN chambre c ON c.id = r.chambre_id
+             INNER JOIN utilisateur u ON u.id = r.utilisateur_id
+             ORDER BY r.date_arrivee DESC'
+        );
+
+        return $requete->fetchAll();
+    }
+
+
 }

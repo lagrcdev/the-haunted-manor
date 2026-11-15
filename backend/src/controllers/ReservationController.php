@@ -71,4 +71,12 @@ class ReservationController
         Reponse::json(['message' => 'Réservation annulée']);
     }
 
+    public static function toutes(): void
+    {
+        Auth::exigerAdmin();
+
+        Reponse::json(ReservationModel::toutes());
+    }
+
+
 }
