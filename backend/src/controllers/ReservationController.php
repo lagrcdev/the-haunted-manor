@@ -53,4 +53,22 @@ class ReservationController
             'prix_total' => $resultat['prix_total'],
         ], 201);
     }
+        public static function mesReservations(): void
+    {
+        $utilisateurId = Auth::exigerConnexion();
+
+        Reponse::json(ReservationModel::reservationsDeUtilisateur($utilisateurId));
+    }
+
+    public static function annuler(int $id): void
+    {
+        $utilisateurId = Auth::exigerConnexion();
+
+        if (!ReservationModel::annuler($id, $utilisateurId)) {
+            Reponse::json(['erreur' => 'Réservation introuvable'], 404);
+        }
+
+        Reponse::json(['message' => 'Réservation annulée']);
+    }
+
 }

@@ -61,4 +61,33 @@ class ReservationModel
             throw $erreur;
         }
     }
+        public static function reservationsDeUtilisateur(int $utilisateurId): array
+    {
+        $pdo = Database::getConnexion();
+
+        $requete = $pdo->prepare(
+            'SELECT r.id, r.date_arrivee, r.date_depart, r.prix_total, r.statut, c.nom AS chambre
+             FROM reservation r
+             INNER JOIN chambre c ON c.id = r.chambre_id
+             WHERE r.utilisateur_id = :utilisateur_id
+             ORDER BY r.date_arrivee DESC'
+        );
+        $requete->execute(['utilisateur_id' => $utilisateurId]);
+
+        return $requete->fetchAll();
+    }
+
+    public static function annuler(int $id, int $utilisateurId): bool
+    {
+        $pdo = Database::getConnexion();
+
+        $requete = $pdo->prepare(
+            "UPDATE reservation SET statut = 'annulee'
+             WHERE id = :id AND utilisateur_id = :utilisateur_id AND statut = 'confirmee'"
+        );
+        $requete->execute(['id' => $id, 'utilisateur_id' => $utilisateurId]);
+
+        return $requete->rowCount() > 0;
+    }
+
 }

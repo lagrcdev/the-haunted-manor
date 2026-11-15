@@ -49,5 +49,12 @@ if ($methode === 'GET' && $chemin === '/api/moi') {
 if ($methode === 'POST' && $chemin === '/api/reservations') {
     ReservationController::creer();
 }
+if ($methode === 'GET' && $chemin === '/api/reservations') {
+    ReservationController::mesReservations();
+}
+
+if ($methode === 'DELETE' && preg_match('#^/api/reservations/([0-9]+)$#', $chemin, $morceaux)) {
+    ReservationController::annuler((int) $morceaux[1]);
+}
 
 Reponse::json(['erreur' => 'Adresse introuvable'], 404);
