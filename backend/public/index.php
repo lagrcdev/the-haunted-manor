@@ -7,6 +7,12 @@ require_once __DIR__ . '/../src/core/Csrf.php';
 require_once __DIR__ . '/../src/controllers/ReservationController.php';
 
 header('Content-Type: application/json; charset=utf-8');
+ini_set('display_errors', '0');
+
+set_exception_handler(function (Throwable $erreur) {
+    error_log($erreur->getMessage());
+    Reponse::json(['erreur' => 'Erreur du serveur'], 500);
+});
 
 session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax']);
 session_start();
