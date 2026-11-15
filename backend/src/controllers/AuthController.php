@@ -2,35 +2,16 @@
 
 require_once __DIR__ . '/../core/Reponse.php';
 require_once __DIR__ . '/../models/UtilisateurModel.php';
+require_once __DIR__ . '/../core/Requete.php';
 
 class AuthController
 {
-    private static function lireCorps(): array
-    {
-        $corps = json_decode(file_get_contents('php://input'), true);
-
-        if (!is_array($corps)) {
-            return [];
-        }
-
-        return $corps;
-    }
-
-    private static function champ(array $donnees, string $cle): string
-    {
-        if (isset($donnees[$cle]) && is_string($donnees[$cle])) {
-            return $donnees[$cle];
-        }
-
-        return '';
-    }
-
     public static function inscription(): void
     {
-        $donnees = self::lireCorps();
-        $nom = trim(self::champ($donnees, 'nom'));
-        $email = trim(self::champ($donnees, 'email'));
-        $motDePasse = self::champ($donnees, 'mot_de_passe');
+        $donnees = Requete::corps();
+        $nom = trim(Requete::texte($donnees, 'nom'));
+        $email = trim(Requete::texte($donnees, 'email'));
+        $motDePasse = Requete::texte($donnees, 'mot_de_passe');
         $consentement = $donnees['consentement'] ?? false;
 
         if ($nom === '' || strlen($nom) > 100) {
@@ -61,9 +42,9 @@ class AuthController
 
     public static function connexion(): void
     {
-        $donnees = self::lireCorps();
-        $email = trim(self::champ($donnees, 'email'));
-        $motDePasse = self::champ($donnees, 'mot_de_passe');
+        $donnees = Requete::corps();
+        $email = trim(Requete::texte($donnees, 'email'));
+        $motDePasse = Requete::texte($donnees, 'mot_de_passe');
 
         $utilisateur = UtilisateurModel::trouverParEmail($email);
 

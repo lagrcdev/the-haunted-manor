@@ -4,6 +4,7 @@ require_once __DIR__ . '/../src/core/Reponse.php';
 require_once __DIR__ . '/../src/controllers/ChambreController.php';
 require_once __DIR__ . '/../src/controllers/AuthController.php';
 require_once __DIR__ . '/../src/core/Csrf.php';
+require_once __DIR__ . '/../src/controllers/ReservationController.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -43,6 +44,10 @@ if ($methode === 'POST' && $chemin === '/api/deconnexion') {
 
 if ($methode === 'GET' && $chemin === '/api/moi') {
     AuthController::moi();
+}
+
+if ($methode === 'POST' && $chemin === '/api/reservations') {
+    ReservationController::creer();
 }
 
 Reponse::json(['erreur' => 'Adresse introuvable'], 404);

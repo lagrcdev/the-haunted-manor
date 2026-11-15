@@ -1,0 +1,56 @@
+<?php
+
+require_once __DIR__ . '/../core/Reponse.php';
+require_once __DIR__ . '/../core/Requete.php';
+require_once __DIR__ . '/../core/Auth.php';
+require_once __DIR__ . '/../models/ReservationModel.php';
+
+class ReservationController
+{
+    public static function creer(): void
+    {
+        $utilisateurId = Auth::exigerConnexion();
+
+        $donnees = Requete::corps();
+        $chambreId = (int) ($donnees['chambre_id'] ?? 0);
+        $arrivee = Requete::texte($donnees, 'date_arrivee');
+        $depart = Requete::texte($donnees, 'date_depart');
+
+        if ($chambreId <= 0) {
+            Reponse::json(['erreur' => 'Chambre invalide'], 400);
+        }
+
+        $dateArrivee = DateTime::createFromFormat('Y-m-d', $arrivee);
+        $dateDepart = DateTime::createFromFormat('Y-m-d', $depart);
+
+        if ($dateArrivee === false || $dateDepart === false
+            || $dateArrivee->format('Y-m-d') !== $arrivee
+            || $dateDepart->format('Y-m-d') !== $depart) {
+            Reponse::json(['erreur' => 'Dates invalides'], 400);
+        }
+
+        if ($dateArrivee < new DateTime('today')) {
+            Reponse::json(['erreur' => 'La date d\'arrivée est déjà passée'], 400);
+        }
+
+        if ($dateDepart <= $dateArrivee) {
+            Reponse::json(['erreur' => 'Le départ doit être après l\'arrivée'], 400);
+        }
+
+        $resultat = ReservationModel::creer($utilisateurId, $chambreId, $arrivee, $depart);
+
+        if (!$resultat['ok']) {
+            if ($resultat['raison'] === 'chambre_introuvable') {
+                Reponse::json(['erreur' => 'Chambre introuvable'], 404);
+            }
+
+            Reponse::json(['erreur' => 'Chambre indisponible à ces dates'], 409);
+        }
+
+        Reponse::json([
+            'id' => $resultat['id'],
+            'nuits' => $resultat['nuits'],
+            'prix_total' => $resultat['prix_total'],
+        ], 201);
+    }
+}
