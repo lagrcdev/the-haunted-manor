@@ -5,6 +5,7 @@ require_once __DIR__ . '/../src/controllers/ChambreController.php';
 require_once __DIR__ . '/../src/controllers/AuthController.php';
 require_once __DIR__ . '/../src/core/Csrf.php';
 require_once __DIR__ . '/../src/controllers/ReservationController.php';
+require_once __DIR__ . '/../src/controllers/AvisController.php';
 
 header('Content-Type: application/json; charset=utf-8');
 ini_set('display_errors', '0');
@@ -76,6 +77,13 @@ if ($methode === 'PUT' && preg_match('#^/api/admin/chambres/([0-9]+)$#', $chemin
 
 if ($methode === 'DELETE' && preg_match('#^/api/admin/chambres/([0-9]+)$#', $chemin, $morceaux)) {
     ChambreController::supprimer((int) $morceaux[1]);
+}
+if ($methode === 'GET' && $chemin === '/api/avis') {
+    AvisController::liste();
+}
+
+if ($methode === 'POST' && $chemin === '/api/avis') {
+    AvisController::creer();
 }
 
 Reponse::json(['erreur' => 'Adresse introuvable'], 404);
