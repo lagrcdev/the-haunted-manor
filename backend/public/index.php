@@ -70,5 +70,12 @@ if ($methode === 'GET' && $chemin === '/api/admin/reservations') {
 if ($methode === 'POST' && $chemin === '/api/admin/chambres') {
     ChambreController::creer();
 }
+if ($methode === 'PUT' && preg_match('#^/api/admin/chambres/([0-9]+)$#', $chemin, $morceaux)) {
+    ChambreController::modifier((int) $morceaux[1]);
+}
+
+if ($methode === 'DELETE' && preg_match('#^/api/admin/chambres/([0-9]+)$#', $chemin, $morceaux)) {
+    ChambreController::supprimer((int) $morceaux[1]);
+}
 
 Reponse::json(['erreur' => 'Adresse introuvable'], 404);

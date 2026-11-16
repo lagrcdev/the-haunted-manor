@@ -68,4 +68,34 @@ class ChambreController {
         Reponse::json(['id' => $id], 201);
     }
 
+        public static function modifier(int $id): void {
+        Auth::exigerAdmin();
+
+        if (ChambreModel::getById($id) === null) {
+            Reponse::json(['erreur' => 'Chambre introuvable'], 404);
+        }
+
+        $c = self::lireDonnees();
+        ChambreModel::modifier($id, $c['nom'], $c['fantome'], $c['description'], $c['niveau_frayeur'], $c['prix_nuit']);
+
+        Reponse::json(['message' => 'Chambre modifiée']);
+    }
+
+    public static function supprimer(int $id): void {
+        Auth::exigerAdmin();
+
+        if (ChambreModel::getById($id) === null) {
+            Reponse::json(['erreur' => 'Chambre introuvable'], 404);
+        }
+
+        if (ChambreModel::nombreReservations($id) > 0) {
+            Reponse::json(['erreur' => 'Cette chambre a des réservations, elle ne peut pas être supprimée'], 409);
+        }
+
+        ChambreModel::supprimer($id);
+
+        Reponse::json(['message' => 'Chambre supprimée']);
+    }
+
+
 }

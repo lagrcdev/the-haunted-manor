@@ -41,5 +41,39 @@ class ChambreModel {
         return (int) $pdo->lastInsertId();
     }
 
+    public static function modifier(int $id, string $nom, string $fantome, string $description, int $niveauFrayeur, float $prixNuit): void {
+        $pdo = Database::getConnexion();
+
+        $requete = $pdo->prepare(
+            'UPDATE chambre
+             SET nom = :nom, fantome = :fantome, description = :description,
+                 niveau_frayeur = :niveau_frayeur, prix_nuit = :prix_nuit
+             WHERE id = :id'
+        );
+        $requete->execute([
+            'nom' => $nom,
+            'fantome' => $fantome,
+            'description' => $description,
+            'niveau_frayeur' => $niveauFrayeur,
+            'prix_nuit' => $prixNuit,
+            'id' => $id,
+        ]);
+    }
+
+    public static function nombreReservations(int $id): int {
+        $pdo = Database::getConnexion();
+
+        $requete = $pdo->prepare('SELECT COUNT(*) FROM reservation WHERE chambre_id = :id');
+        $requete->execute(['id' => $id]);
+
+        return (int) $requete->fetchColumn();
+    }
+
+    public static function supprimer(int $id): void {
+        $pdo = Database::getConnexion();
+
+        $requete = $pdo->prepare('DELETE FROM chambre WHERE id = :id');
+        $requete->execute(['id' => $id]);
+    }
 
 }
