@@ -4,10 +4,8 @@ require_once __DIR__ . '/../core/Reponse.php';
 require_once __DIR__ . '/../models/UtilisateurModel.php';
 require_once __DIR__ . '/../core/Requete.php';
 
-class AuthController
-{
-    public static function inscription(): void
-    {
+class AuthController {
+    public static function inscription(): void {
         $donnees = Requete::corps();
         $nom = trim(Requete::texte($donnees, 'nom'));
         $email = trim(Requete::texte($donnees, 'email'));
@@ -40,8 +38,7 @@ class AuthController
         Reponse::json(['id' => $id, 'nom' => $nom], 201);
     }
 
-    public static function connexion(): void
-    {
+    public static function connexion(): void {
         $donnees = Requete::corps();
         $email = trim(Requete::texte($donnees, 'email'));
         $motDePasse = Requete::texte($donnees, 'mot_de_passe');
@@ -64,16 +61,14 @@ class AuthController
         ]);
     }
 
-    public static function deconnexion(): void
-    {
+    public static function deconnexion(): void {
         $_SESSION = [];
         session_destroy();
 
         Reponse::json(['message' => 'Déconnecté']);
     }
 
-    public static function moi(): void
-    {
+    public static function moi(): void {
         if (!isset($_SESSION['utilisateur_id'])) {
             Reponse::json(['erreur' => 'Non connecté'], 401);
         }

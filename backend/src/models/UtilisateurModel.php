@@ -2,10 +2,8 @@
 
 require_once __DIR__ . '/../core/Database.php';
 
-class UtilisateurModel
-{
-    public static function creer(string $nom, string $email, string $motDePasseHache): int
-    {
+class UtilisateurModel {
+    public static function creer(string $nom, string $email, string $motDePasseHache): int {
         $pdo = Database::getConnexion();
         $requete = $pdo->prepare(
             'INSERT INTO utilisateur (nom, email, mot_de_passe, date_consentement)
@@ -20,8 +18,7 @@ class UtilisateurModel
         return (int) $pdo->lastInsertId();
     }
 
-    public static function trouverParEmail(string $email): ?array
-    {
+    public static function trouverParEmail(string $email): ?array {
         $pdo = Database::getConnexion();
         $requete = $pdo->prepare('SELECT * FROM utilisateur WHERE email = :email');
         $requete->execute(['email' => $email]);

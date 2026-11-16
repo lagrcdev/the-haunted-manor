@@ -67,4 +67,8 @@ if ($methode === 'GET' && $chemin === '/api/admin/reservations') {
     ReservationController::toutes();
 }
 
+if ($methode === 'POST' && $chemin === '/api/admin/chambres') {
+    ChambreController::creer();
+}
+
 Reponse::json(['erreur' => 'Adresse introuvable'], 404);

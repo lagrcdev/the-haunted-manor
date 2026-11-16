@@ -5,10 +5,8 @@ require_once __DIR__ . '/../core/Requete.php';
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../models/ReservationModel.php';
 
-class ReservationController
-{
-    public static function creer(): void
-    {
+class ReservationController {
+    public static function creer(): void {
         $utilisateurId = Auth::exigerConnexion();
 
         $donnees = Requete::corps();
@@ -53,15 +51,13 @@ class ReservationController
             'prix_total' => $resultat['prix_total'],
         ], 201);
     }
-        public static function mesReservations(): void
-    {
+    public static function mesReservations(): void {
         $utilisateurId = Auth::exigerConnexion();
 
         Reponse::json(ReservationModel::reservationsDeUtilisateur($utilisateurId));
     }
 
-    public static function annuler(int $id): void
-    {
+    public static function annuler(int $id): void {
         $utilisateurId = Auth::exigerConnexion();
 
         if (!ReservationModel::annuler($id, $utilisateurId)) {
@@ -71,8 +67,7 @@ class ReservationController
         Reponse::json(['message' => 'Réservation annulée']);
     }
 
-    public static function toutes(): void
-    {
+    public static function toutes(): void {
         Auth::exigerAdmin();
 
         Reponse::json(ReservationModel::toutes());

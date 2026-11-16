@@ -1,11 +1,9 @@
 <?php
 
-class Database
-{
+class Database {
     private static ?PDO $connexion = null;
 
-    public static function getConnexion(): PDO
-    {
+    public static function getConnexion(): PDO {
         if (self::$connexion === null) {
             $hote = getenv('DB_HOST');
             $nom = getenv('DB_NAME');

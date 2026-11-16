@@ -2,10 +2,8 @@
 
 require_once __DIR__ . '/../core/Database.php';
 
-class ReservationModel
-{
-    public static function creer(int $utilisateurId, int $chambreId, string $arrivee, string $depart): array
-    {
+class ReservationModel {
+    public static function creer(int $utilisateurId, int $chambreId, string $arrivee, string $depart): array {
         $pdo = Database::getConnexion();
         $pdo->beginTransaction();
 
@@ -61,8 +59,7 @@ class ReservationModel
             throw $erreur;
         }
     }
-        public static function reservationsDeUtilisateur(int $utilisateurId): array
-    {
+    public static function reservationsDeUtilisateur(int $utilisateurId): array {
         $pdo = Database::getConnexion();
 
         $requete = $pdo->prepare(
@@ -77,8 +74,7 @@ class ReservationModel
         return $requete->fetchAll();
     }
 
-    public static function annuler(int $id, int $utilisateurId): bool
-    {
+    public static function annuler(int $id, int $utilisateurId): bool {
         $pdo = Database::getConnexion();
 
         $requete = $pdo->prepare(
@@ -90,8 +86,7 @@ class ReservationModel
         return $requete->rowCount() > 0;
     }
 
-    public static function toutes(): array
-    {
+    public static function toutes(): array {
         $pdo = Database::getConnexion();
 
         $requete = $pdo->query(
