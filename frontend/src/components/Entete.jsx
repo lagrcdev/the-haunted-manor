@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom'
 
-function Entete() {
+function Entete({ utilisateur, onDeconnexion }) {
   return (
     <header>
       <Link to="/">
@@ -10,6 +10,17 @@ function Entete() {
       <nav>
         <NavLink to="/">Accueil</NavLink>
         <NavLink to="/chambres">Chambres</NavLink>
+        {utilisateur ? (
+          <>
+            <span>Bonjour {utilisateur.nom}</span>
+            <button type="button" onClick={onDeconnexion}>Déconnexion</button>
+          </>
+        ) : (
+          <>
+            <NavLink to="/inscription">Inscription</NavLink>
+            <NavLink to="/connexion">Connexion</NavLink>
+          </>
+        )}
       </nav>
     </header>
   )
