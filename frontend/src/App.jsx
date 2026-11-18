@@ -8,6 +8,7 @@ import Chambres from './pages/Chambres.jsx'
 import ChambreDetail from './pages/ChambreDetail.jsx'
 import Inscription from './pages/Inscription.jsx'
 import Connexion from './pages/Connexion.jsx'
+import MesReservations from './pages/MesReservations.jsx'
 import { envoyer } from './api.js'
 
 function App() {
@@ -31,9 +32,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Accueil />} />
           <Route path="/chambres" element={<Chambres />} />
-          <Route path="/chambres/:id" element={<ChambreDetail />} />
+          <Route path="/chambres/:id" element={<ChambreDetail utilisateur={utilisateur} />} />
           <Route path="/inscription" element={<Inscription />} />
           <Route path="/connexion" element={<Connexion onConnexion={setUtilisateur} />} />
+          <Route path="/mes-reservations" element={<MesReservations utilisateur={utilisateur} />} />
           <Route path="*" element={<Introuvable />} />
         </Routes>
       </main>
