@@ -12,6 +12,8 @@ import MesReservations from './pages/MesReservations.jsx'
 import AdminReservations from './pages/AdminReservations.jsx'
 import AdminChambres from './pages/AdminChambres.jsx'
 import LivreDOr from './pages/LivreDOr.jsx'
+import MentionsLegales from './pages/MentionsLegales.jsx'
+import Confidentialite from './pages/Confidentialite.jsx'
 import { envoyer } from './api.js'
 
 function App() {
@@ -42,6 +44,8 @@ function App() {
           <Route path="/admin" element={<AdminReservations utilisateur={utilisateur} />} />
           <Route path="/admin/chambres" element={<AdminChambres utilisateur={utilisateur} />} />
           <Route path="/livre-d-or" element={<LivreDOr utilisateur={utilisateur} />} />
+          <Route path="/mentions-legales" element={<MentionsLegales />} />
+          <Route path="/confidentialite" element={<Confidentialite />} />
           <Route path="*" element={<Introuvable />} />
         </Routes>
       </main>
