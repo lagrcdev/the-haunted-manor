@@ -1,0 +1,145 @@
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { envoyer } from '../api.js'
+
+function AdminChambres({ utilisateur }) {
+  const [chambres, setChambres] = useState([])
+  const [erreur, setErreur] = useState('')
+  const [idModif, setIdModif] = useState(null)
+  const [nom, setNom] = useState('')
+  const [fantome, setFantome] = useState('')
+  const [description, setDescription] = useState('')
+  const [frayeur, setFrayeur] = useState('')
+  const [prix, setPrix] = useState('')
+
+  function charger() {
+    fetch('/api/chambres')
+      .then((reponse) => {
+        if (!reponse.ok) {
+          throw new Error('Erreur')
+        }
+        return reponse.json()
+      })
+      .then((donnees) => setChambres(donnees))
+      .catch(() => setErreur('Impossible de charger les chambres'))
+  }
+
+  useEffect(() => {
+    if (utilisateur && utilisateur.role === 'admin') {
+      charger()
+    }
+  }, [utilisateur])
+
+  async function supprimer(id) {
+    if (!window.confirm('Supprimer cette chambre ?')) {
+      return
+    }
+
+    setErreur('')
+    const resultat = await envoyer('DELETE', `/api/admin/chambres/${id}`)
+
+    if (resultat.ok) {
+      charger()
+    } else {
+      setErreur(resultat.corps.erreur)
+    }
+  }
+
+  function vider() {
+    setIdModif(null)
+    setNom('')
+    setFantome('')
+    setDescription('')
+    setFrayeur('')
+    setPrix('')
+  }
+
+  function preparerModification(chambre) {
+    setIdModif(chambre.id)
+    setNom(chambre.nom)
+    setFantome(chambre.fantome)
+    setDescription(chambre.description)
+    setFrayeur(String(chambre.niveau_frayeur))
+    setPrix(String(chambre.prix_nuit))
+  }
+
+  async function enregistrer(evenement) {
+    evenement.preventDefault()
+    setErreur('')
+
+    const donnees = {
+      nom,
+      fantome,
+      description,
+      niveau_frayeur: Number(frayeur),
+      prix_nuit: Number(prix),
+    }
+
+    let resultat
+    if (idModif) {
+      resultat = await envoyer('PUT', `/api/admin/chambres/${idModif}`, donnees)
+    } else {
+      resultat = await envoyer('POST', '/api/admin/chambres', donnees)
+    }
+
+    if (resultat.ok) {
+      vider()
+      charger()
+    } else {
+      setErreur(resultat.corps.erreur)
+    }
+  }
+
+  if (!utilisateur || utilisateur.role !== 'admin') {
+    return (
+      <section>
+        <h1>Gestion des chambres</h1>
+        <p>Cette page est réservée à l'administrateur.</p>
+        <Link to="/">Retour à l'accueil</Link>
+      </section>
+    )
+  }
+
+  return (
+    <section className="admin">
+      <h1>Gestion des chambres</h1>
+
+      {erreur && <p role="alert" className="erreur">{erreur}</p>}
+
+      <form onSubmit={enregistrer} className="formulaire-admin">
+        <h2>{idModif ? 'Modifier la chambre' : 'Ajouter une chambre'}</h2>
+
+        <label htmlFor="nom">Nom de la chambre</label>
+        <input id="nom" type="text" value={nom} onChange={(e) => setNom(e.target.value)} required maxLength="100" />
+
+        <label htmlFor="fantome">Nom du fantôme</label>
+        <input id="fantome" type="text" value={fantome} onChange={(e) => setFantome(e.target.value)} required maxLength="100" />
+
+        <label htmlFor="description">Histoire de la chambre</label>
+        <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} required rows="6" />
+
+        <label htmlFor="frayeur">Niveau de frayeur (1 à 5)</label>
+        <input id="frayeur" type="number" min="1" max="5" value={frayeur} onChange={(e) => setFrayeur(e.target.value)} required />
+
+        <label htmlFor="prix">Prix par nuit (€)</label>
+        <input id="prix" type="number" min="1" step="0.01" value={prix} onChange={(e) => setPrix(e.target.value)} required />
+
+        <button type="submit" className="bouton">{idModif ? 'Enregistrer' : 'Ajouter'}</button>
+        {idModif && <button type="button" onClick={vider}>Annuler la modification</button>}
+      </form>
+
+      {chambres.map((chambre) => (
+        <article key={chambre.id} className="admin-chambre">
+          <h2>{chambre.nom}</h2>
+          <p>Fantôme : {chambre.fantome}</p>
+          <p>Niveau de frayeur : {chambre.niveau_frayeur} / 5</p>
+          <p>{chambre.prix_nuit} € la nuit</p>
+          <button type="button" onClick={() => preparerModification(chambre)}>Modifier</button>
+          <button type="button" onClick={() => supprimer(chambre.id)}>Supprimer</button>
+        </article>
+      ))}
+    </section>
+  )
+}
+
+export default AdminChambres
