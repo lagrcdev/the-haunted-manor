@@ -10,6 +10,8 @@ function Entete({ utilisateur, onDeconnexion }) {
       <nav>
         <NavLink to="/">Accueil</NavLink>
         <NavLink to="/chambres">Chambres</NavLink>
+        <NavLink to="/livre-d-or">Livre d'or</NavLink>
+
         {utilisateur ? (
           <>
             <NavLink to="/mes-reservations">Mes réservations</NavLink>
