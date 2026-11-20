@@ -122,8 +122,6 @@ function AdminChambres({ utilisateur }) {
 
   return (
     <section className="admin">
-      <h1>Gestion des chambres</h1>
-
       {erreur && <p role="alert" className="erreur">{erreur}</p>}
 
       <form onSubmit={enregistrer} className="formulaire-admin">
@@ -170,6 +168,8 @@ function AdminChambres({ utilisateur }) {
         <button type="submit" className="bouton">{idModif ? 'Enregistrer' : 'Ajouter'}</button>
         {idModif && <button type="button" onClick={vider}>Annuler la modification</button>}
       </form>
+
+      <h2>Gestion des chambres</h2>
 
       {chambres.map((chambre) => (
         <article key={chambre.id} className="admin-chambre">

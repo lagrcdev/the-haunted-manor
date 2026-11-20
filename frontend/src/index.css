@@ -544,6 +544,10 @@ footer nav {
   gap: 0.5rem;
 }
 
+footer .telephone {
+  margin-top: 1rem;
+}
+
 .droits {
   text-align: center;
 }

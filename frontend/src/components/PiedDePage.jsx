@@ -20,11 +20,14 @@ function PiedDePage() {
           <Link to="/livre-d-or">Livre d'or</Link>
         </nav>
 
-        <nav aria-label="Informations légales">
-          <h2>Informations légales</h2>
-          <Link to="/mentions-legales">Mentions légales</Link>
-          <Link to="/confidentialite">Politique de confidentialité</Link>
-        </nav>
+        <div>
+          <nav aria-label="Informations légales">
+            <h2>Informations légales</h2>
+            <Link to="/mentions-legales">Mentions légales</Link>
+            <Link to="/confidentialite">Politique de confidentialité</Link>
+          </nav>
+          <p className="telephone">Tél. : 06 00 00 00 00</p>
+        </div>
       </div>
 
       <p className="droits">© {new Date().getFullYear()} The Haunted Manor - Projet fictif pour le titre DWWM</p>
