@@ -60,6 +60,13 @@ class ChambreModel {
         ]);
     }
 
+    public static function modifierPhoto(int $id, string $photo): void {
+        $pdo = Database::getConnexion();
+
+        $requete = $pdo->prepare('UPDATE chambre SET photo = :photo WHERE id = :id');
+        $requete->execute(['photo' => $photo, 'id' => $id]);
+    }
+
     public static function nombreReservations(int $id): int {
         $pdo = Database::getConnexion();
 

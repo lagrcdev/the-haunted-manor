@@ -67,6 +67,16 @@ class ReservationController {
         Reponse::json(['message' => 'Réservation annulée']);
     }
 
+    public static function annulerParAdmin(int $id): void {
+        Auth::exigerAdmin();
+
+        if (!ReservationModel::annulerParAdmin($id)) {
+            Reponse::json(['erreur' => 'Réservation introuvable ou déjà annulée'], 404);
+        }
+
+        Reponse::json(['message' => 'Réservation annulée']);
+    }
+
     public static function toutes(): void {
         Auth::exigerAdmin();
 

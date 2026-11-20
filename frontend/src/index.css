@@ -6,9 +6,18 @@
 }
 
 @font-face {
-  font-family: 'Lato';
-  src: url('/fonts/Lato-Regular.ttf');
-  font-weight: 400;
+  font-family: 'Lora';
+  src: url('/fonts/Lora-VariableFont_wght.ttf');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('/fonts/Lora-Italic-VariableFont_wght.ttf');
+  font-weight: 400 700;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -16,6 +25,8 @@
   --fond: #121212;
   --texte: #f5f0e6;
   --marron: #8b5a2b;
+  --erreur: #ff8a80;
+  color-scheme: dark;
 }
 
 * {
@@ -26,7 +37,7 @@ body {
   margin: 0;
   background: var(--fond);
   color: var(--texte);
-  font-family: 'Lato', sans-serif;
+  font-family: 'Lora', serif;
   line-height: 1.5;
 }
 
@@ -35,7 +46,7 @@ h1, h2 {
 }
 
 .police-texte {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Lora', serif;
 }
 
 a {
@@ -64,14 +75,41 @@ nav {
   gap: 1rem;
 }
 
-nav a.active {
-  font-weight: bold;
-  text-decoration: underline;
+header nav {
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+header nav a, header nav button {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1.5;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+header nav a:hover, header nav a.active {
+  background: var(--texte);
+  color: var(--fond);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
+  flex: 1;
+  width: 100%;
   max-width: 70rem;
   margin: 0 auto;
+  padding-bottom: 3rem;
 }
 
 .bouton {
@@ -86,26 +124,61 @@ main {
 .liste-chambres {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .carte {
   background: var(--marron);
   color: var(--texte);
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 0.5rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.carte h2 {
+  font-size: 1.3rem;
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.carte h2::after {
+  content: '';
+  display: block;
+  width: 70%;
+  margin: 0.75rem auto 0;
+  border-top: 2px solid var(--texte);
+}
+
+.carte p {
+  margin: 0 0 0.5rem;
+}
+
+.carte p:nth-of-type(-n+2)::after {
+  content: '';
+  display: block;
+  width: 45%;
+  margin: 0.5rem auto 0;
+  border-top: 1px solid var(--texte);
+}
+
+.carte p:last-of-type {
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 footer {
   border-top: 2px solid var(--marron);
-  text-align: center;
+  text-align: left;
 }
 
 .banniere {
   display: block;
   width: 100%;
   border-radius: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .accueil {
@@ -118,10 +191,361 @@ footer {
   margin-right: auto;
 }
 
+.presentation {
+  max-width: 45rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border: 2px solid var(--texte);
+  border-radius: 0.5rem;
+}
+
+.accueil .bouton {
+  margin-top: 1.5rem;
+}
+
 .carte img {
   display: block;
   border-radius: 0.25rem;
   margin-bottom: 0.75rem;
+}
+
+.carte .bouton {
+  display: block;
+  width: fit-content;
+  margin: 1rem auto 0;
+  background: var(--texte);
+  color: var(--fond);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 30rem;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+input, textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--marron);
+  border-radius: 0.5rem;
+  background: var(--fond);
+  color: var(--texte);
+  font: inherit;
+}
+
+input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus, textarea:focus, button:focus {
+  outline: 2px solid var(--texte);
+  outline-offset: 2px;
+}
+
+button {
+  background: var(--marron);
+  color: var(--texte);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+form button {
+  align-self: flex-start;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+.erreur {
+  color: var(--erreur);
+  border-left: 4px solid var(--erreur);
+  padding-left: 0.75rem;
+}
+
+.formulaire {
+  text-align: center;
+}
+
+.formulaire form {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.formulaire form button {
+  align-self: center;
+}
+
+.detail-chambre {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+.photo-chambre {
+  display: block;
+  width: 100%;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-chambre h1 {
+  margin: 0 0 1.5rem;
+  text-align: center;
+}
+
+.detail-chambre p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin: 0 0 1rem;
+}
+
+.infos-chambre {
+  background: var(--marron);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.infos-chambre p:last-child {
+  margin-bottom: 0;
+}
+
+.trait {
+  width: 50%;
+  margin: 0 0 1rem;
+  border: none;
+  border-top: 2px solid var(--texte);
+}
+
+.histoire {
+  font-style: italic;
+}
+
+.infos-bas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.infos-bas p {
+  margin: 0;
+}
+
+.formulaire-reservation, .confirmation {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 2px solid var(--texte);
+  border-radius: 0.5rem;
+}
+
+.detail-chambre > .bouton {
+  margin-top: 1.5rem;
+}
+
+.admin h1 {
+  text-decoration: underline;
+}
+
+.formulaire-admin {
+  max-width: 40rem;
+}
+
+.formulaire-admin button {
+  align-self: center;
+}
+
+.admin-chambre button + button {
+  margin-left: 0.75rem;
+}
+
+.ligne-formulaire {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-chambre {
+  padding: 1.25rem 0 2.25rem;
+  border-bottom: 2px solid var(--texte);
+}
+
+.admin-chambre h2 {
+  margin-top: 0;
+  text-decoration: underline;
+}
+
+.admin-photo {
+  display: block;
+  width: 100%;
+  max-width: 12rem;
+  border-radius: 0.25rem;
+}
+
+.espace-client, .admin {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+.reservation {
+  display: grid;
+  grid-template-areas:
+    "titre"
+    "photo"
+    "texte";
+  gap: 1rem;
+  background: var(--marron);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.reservation h2 {
+  grid-area: titre;
+  font-size: 1.3rem;
+  margin: 0;
+  text-decoration: underline;
+}
+
+.reservation-photo {
+  grid-area: photo;
+  width: 100%;
+  border-radius: 0.25rem;
+}
+
+.reservation-texte {
+  grid-area: texte;
+}
+
+.reservation p {
+  margin: 0 0 0.5rem;
+}
+
+.reservation button {
+  background: var(--texte);
+  color: var(--fond);
+  margin-top: 0.5rem;
+}
+
+.livre-d-or h1 {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.livre-d-or h1::after {
+  content: '';
+  display: block;
+  width: 50%;
+  margin: 0.75rem auto 0;
+  border-top: 3px solid var(--marron);
+}
+
+.livre-contenu {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.formulaire-avis {
+  max-width: none;
+}
+
+.formulaire-avis h2 {
+  margin: 0 0 1rem;
+  text-decoration: underline;
+}
+
+#note {
+  width: 4.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.avis {
+  background: var(--marron);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.avis-entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.avis h2 {
+  font-size: 1.3rem;
+  margin: 0;
+  text-decoration: underline;
+}
+
+.avis p {
+  margin: 0 0 0.5rem;
+}
+
+.avis button {
+  background: var(--texte);
+  color: var(--fond);
+  margin-top: 0.5rem;
+}
+
+.avis .avis-date {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.avis .note::after {
+  content: '';
+  display: block;
+  width: 13%;
+  margin: 0.5rem 0 0;
+  border-top: 1px solid var(--texte);
+}
+
+.pied-colonnes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+footer h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem;
+}
+
+footer p {
+  margin: 0 0 0.5rem;
+}
+
+footer nav {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.droits {
+  text-align: center;
 }
 
 @media (min-width: 768px) {
@@ -132,5 +556,39 @@ footer {
 
   .liste-chambres {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pied-colonnes {
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-around;
+  }
+
+  .livre-contenu {
+    grid-template-columns: 22rem 1fr;
+    align-items: start;
+  }
+
+  .livre-liste {
+    margin-top: 6.25rem;
+  }
+
+  .ligne-formulaire {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .reservation {
+    grid-template-areas:
+      "titre photo"
+      "texte photo";
+    grid-template-columns: auto auto;
+    align-items: center;
+    column-gap: 2rem;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .reservation-photo {
+    width: 14rem;
   }
 }

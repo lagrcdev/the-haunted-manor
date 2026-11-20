@@ -56,12 +56,24 @@ function MesReservations({ utilisateur }) {
       {reservations.map((reservation) => (
         <article key={reservation.id} className="reservation">
           <h2>{reservation.chambre}</h2>
-          <p>Du {reservation.date_arrivee} au {reservation.date_depart}</p>
-          <p>Total : {reservation.prix_total} €</p>
-          <p>Statut : {reservation.statut}</p>
-          {reservation.statut === 'confirmee' && (
-            <button type="button" onClick={() => annuler(reservation.id)}>Annuler</button>
+          {reservation.photo && (
+            <img
+              src={`/uploads/${reservation.photo}`}
+              alt={`Illustration de ${reservation.chambre}`}
+              width="1200"
+              height="800"
+              loading="lazy"
+              className="reservation-photo"
+            />
           )}
+          <div className="reservation-texte">
+            <p>Du {reservation.date_arrivee} au {reservation.date_depart}</p>
+            <p>Total : {reservation.prix_total} €</p>
+            <p>Statut : {reservation.statut === 'confirmee' ? 'Confirmée' : 'Annulée'}</p>
+            {reservation.statut === 'confirmee' && (
+              <button type="button" onClick={() => annuler(reservation.id)}>Annuler ma réservation</button>
+            )}
+          </div>
         </article>
       ))}
     </section>

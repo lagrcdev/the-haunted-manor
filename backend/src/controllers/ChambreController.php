@@ -97,5 +97,42 @@ class ChambreController {
         Reponse::json(['message' => 'Chambre supprimée']);
     }
 
+    public static function envoyerPhoto(int $id): void {
+        Auth::exigerAdmin();
 
+        if (ChambreModel::getById($id) === null) {
+            Reponse::json(['erreur' => 'Chambre introuvable'], 404);
+        }
+
+        $fichier = $_FILES['photo'] ?? null;
+
+        if ($fichier === null || $fichier['error'] === UPLOAD_ERR_NO_FILE) {
+            Reponse::json(['erreur' => 'Aucune photo reçue'], 400);
+        }
+
+        if ($fichier['error'] === UPLOAD_ERR_INI_SIZE || $fichier['size'] > 2 * 1024 * 1024) {
+            Reponse::json(['erreur' => 'La photo est trop lourde (2 Mo maximum)'], 400);
+        }
+
+        if ($fichier['error'] !== UPLOAD_ERR_OK) {
+            Reponse::json(['erreur' => 'L\'envoi de la photo a échoué'], 400);
+        }
+
+        $extensions = ['image/jpeg' => 'jpg', 'image/png' => 'png'];
+        $type = (new finfo(FILEINFO_MIME_TYPE))->file($fichier['tmp_name']);
+
+        if (!isset($extensions[$type]) || getimagesize($fichier['tmp_name']) === false) {
+            Reponse::json(['erreur' => 'Format non accepté (JPG ou PNG seulement)'], 400);
+        }
+
+        $nom = bin2hex(random_bytes(16)) . '.' . $extensions[$type];
+
+        if (!move_uploaded_file($fichier['tmp_name'], __DIR__ . '/../../public/uploads/' . $nom)) {
+            throw new RuntimeException('Impossible d\'enregistrer la photo');
+        }
+
+        ChambreModel::modifierPhoto($id, $nom);
+
+        Reponse::json(['photo' => $nom]);
+    }
 }

@@ -68,6 +68,14 @@ if ($methode === 'GET' && $chemin === '/api/admin/reservations') {
     ReservationController::toutes();
 }
 
+if ($methode === 'DELETE' && preg_match('#^/api/admin/reservations/([0-9]+)$#', $chemin, $morceaux)) {
+    ReservationController::annulerParAdmin((int) $morceaux[1]);
+}
+
+if ($methode === 'POST' && preg_match('#^/api/admin/chambres/([0-9]+)/photo$#', $chemin, $morceaux)) {
+    ChambreController::envoyerPhoto((int) $morceaux[1]);
+}
+
 if ($methode === 'POST' && $chemin === '/api/admin/chambres') {
     ChambreController::creer();
 }
@@ -84,6 +92,10 @@ if ($methode === 'GET' && $chemin === '/api/avis') {
 
 if ($methode === 'POST' && $chemin === '/api/avis') {
     AvisController::creer();
+}
+
+if ($methode === 'DELETE' && preg_match('#^/api/avis/([0-9a-f]{24})$#', $chemin, $morceaux)) {
+    AvisController::supprimer($morceaux[1]);
 }
 
 Reponse::json(['erreur' => 'Adresse introuvable'], 404);

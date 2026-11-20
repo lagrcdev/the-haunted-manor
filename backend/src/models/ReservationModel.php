@@ -63,7 +63,7 @@ class ReservationModel {
         $pdo = Database::getConnexion();
 
         $requete = $pdo->prepare(
-            'SELECT r.id, r.date_arrivee, r.date_depart, r.prix_total, r.statut, c.nom AS chambre
+            'SELECT r.id, r.date_arrivee, r.date_depart, r.prix_total, r.statut, c.nom AS chambre, c.photo
              FROM reservation r
              INNER JOIN chambre c ON c.id = r.chambre_id
              WHERE r.utilisateur_id = :utilisateur_id
@@ -86,12 +86,24 @@ class ReservationModel {
         return $requete->rowCount() > 0;
     }
 
+    public static function annulerParAdmin(int $id): bool {
+        $pdo = Database::getConnexion();
+
+        $requete = $pdo->prepare(
+            "UPDATE reservation SET statut = 'annulee'
+             WHERE id = :id AND statut = 'confirmee'"
+        );
+        $requete->execute(['id' => $id]);
+
+        return $requete->rowCount() > 0;
+    }
+
     public static function toutes(): array {
         $pdo = Database::getConnexion();
 
         $requete = $pdo->query(
             'SELECT r.id, r.date_arrivee, r.date_depart, r.prix_total, r.statut,
-                    c.nom AS chambre, u.nom AS client
+                    c.nom AS chambre, c.photo, u.nom AS client
              FROM reservation r
              INNER JOIN chambre c ON c.id = r.chambre_id
              INNER JOIN utilisateur u ON u.id = r.utilisateur_id

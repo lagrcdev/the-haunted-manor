@@ -50,20 +50,26 @@ function ChambreDetail({ utilisateur }) {
 
   return (
     <section className="detail-chambre">
+      <h1>{chambre.nom}</h1>
       {chambre.photo && (
         <img
-          src={`/images/${chambre.photo}`}
+          src={`/uploads/${chambre.photo}`}
           alt={`Illustration de ${chambre.nom}`}
           width="1200"
           height="800"
           className="photo-chambre"
         />
       )}
-      <h1>{chambre.nom}</h1>
-      <p>Fantôme : {chambre.fantome}</p>
-      <p>{chambre.description}</p>
-      <p>Niveau de frayeur : {chambre.niveau_frayeur} / 5</p>
-      <p>{chambre.prix_nuit} € la nuit</p>
+      <div className="infos-chambre">
+        <p>Fantôme : {chambre.fantome}</p>
+        <hr className="trait" />
+        <p className="histoire">{chambre.description}</p>
+        <p>2 personnes</p>
+        <div className="infos-bas">
+          <p>Niveau de frayeur : {chambre.niveau_frayeur} / 5</p>
+          <p>{chambre.prix_nuit} € la nuit</p>
+        </div>
+      </div>
 
       {confirmation ? (
         <div className="confirmation" role="status">

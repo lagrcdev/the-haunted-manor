@@ -7,11 +7,23 @@ require_once __DIR__ . '/../models/AvisModel.php';
 
 class AvisController {
     public static function liste(): void {
-        Reponse::json(AvisModel::derniers(50));
+        $utilisateurId = $_SESSION['utilisateur_id'] ?? null;
+
+        Reponse::json(AvisModel::derniers(50, $utilisateurId));
+    }
+
+    public static function supprimer(string $id): void {
+        $utilisateurId = Auth::exigerConnexion();
+
+        if (!AvisModel::supprimer($id, $utilisateurId)) {
+            Reponse::json(['erreur' => 'Avis introuvable'], 404);
+        }
+
+        Reponse::json(['message' => 'Avis supprimé']);
     }
 
     public static function creer(): void {
-        Auth::exigerConnexion();
+        $utilisateurId = Auth::exigerConnexion();
 
         $donnees = Requete::corps();
         $note = $donnees['note'] ?? null;
@@ -25,7 +37,7 @@ class AvisController {
             Reponse::json(['erreur' => 'Le texte doit faire entre 1 et 500 caractères'], 400);
         }
 
-        AvisModel::creer($_SESSION['nom'], $note, $texte);
+        AvisModel::creer($utilisateurId, $_SESSION['nom'], $note, $texte);
 
         Reponse::json(['message' => 'Avis ajouté'], 201);
     }

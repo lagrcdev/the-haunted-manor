@@ -29,7 +29,7 @@ function Chambres() {
           <article key={chambre.id} className="carte">
             {chambre.photo && (
               <img
-                src={`/images/${chambre.photo}`}
+                src={`/uploads/${chambre.photo}`}
                 alt={`Illustration de ${chambre.nom}`}
                 width="1200"
                 height="800"
@@ -38,7 +38,8 @@ function Chambres() {
             )}
 
             <h2>{chambre.nom}</h2>
-            <p>Fantôme : {chambre.fantome}</p>
+            <p>Cette chambre est habitée par {chambre.fantome}</p>
+            <p>2 personnes</p>
             <p>Niveau de frayeur : {chambre.niveau_frayeur} / 5</p>
             <p>{chambre.prix_nuit} € la nuit</p>
             <Link to={`/chambres/${chambre.id}`} className="bouton">Voir la chambre</Link>

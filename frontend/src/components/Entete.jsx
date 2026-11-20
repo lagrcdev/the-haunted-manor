@@ -10,18 +10,17 @@ function Entete({ utilisateur, onDeconnexion }) {
       <nav>
         <NavLink to="/">Accueil</NavLink>
         <NavLink to="/chambres">Chambres</NavLink>
+        {utilisateur && <NavLink to="/mes-reservations">Mes réservations</NavLink>}
         <NavLink to="/livre-d-or">Livre d'or</NavLink>
 
         {utilisateur ? (
           <>
-            <NavLink to="/mes-reservations">Mes réservations</NavLink>
             {utilisateur.role === 'admin' && (
               <>
                 <NavLink to="/admin">Gérer les réservations</NavLink>
                 <NavLink to="/admin/chambres">Gérer les chambres</NavLink>
               </>
             )}
-            <span>Bonjour {utilisateur.nom}</span>
             <button type="button" onClick={onDeconnexion}>Déconnexion</button>
           </>
         ) : (
