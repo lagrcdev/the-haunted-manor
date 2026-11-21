@@ -70,12 +70,7 @@ Il faut Docker Desktop, Node.js et Git.
 
 Il n'existe pas d'inscription pour un administrateur. On s'inscrit comme un client, puis on change le rôle dans phpMyAdmin (table `utilisateur`, colonne `role`, valeur `admin`) ou en SQL :
 
-UPDATE utilisateur SET role = 'admin' WHERE email = 'votre@email.fr';
-
-### Vérifier la qualité du code React
-
-cd frontend
-npm run lint
+   UPDATE utilisateur SET role = 'admin' WHERE email = 'votre@email.fr';
 
 ## Sécurité
 

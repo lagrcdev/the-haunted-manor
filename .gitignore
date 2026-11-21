@@ -4,3 +4,4 @@ vendor/
 dist/
 Thumbs.db
 .DS_Store
+.phpunit.result.cache
