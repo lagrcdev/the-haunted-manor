@@ -43,26 +43,26 @@ Il faut Docker Desktop, Node.js et Git.
 
 1. Récupérer le projet :
 
-   git clone https://github.com/lagrcdev/the-haunted-manor.git
-   cd the-haunted-manor
+       git clone https://github.com/lagrcdev/the-haunted-manor.git
+       cd the-haunted-manor
 
 2. Créer le fichier `.env` à partir du modèle, puis y mettre ses propres mots de passe (ce fichier n'est jamais envoyé sur GitHub) :
 
-   cp .env.example .env
+       cp .env.example .env
 
    `DB_USER` et `DB_PASSWORD` doivent correspondre à `MYSQL_USER` et `MYSQL_PASSWORD`.
 
 3. Lancer le back-end et les bases de données :
 
-   docker compose up -d --build
+       docker compose up -d --build
 
    Au premier démarrage, MySQL crée les tables et ajoute les trois chambres. L'API répond sur http://localhost:8080 et phpMyAdmin sur http://localhost:8081.
 
 4. Lancer le front-end :
 
-   cd frontend
-   npm install
-   npm run dev
+       cd frontend
+       npm install
+       npm run dev
 
    Le site est alors sur http://localhost:5173. Vite renvoie les adresses `/api` et `/uploads` vers le port 8080.
 
@@ -70,7 +70,7 @@ Il faut Docker Desktop, Node.js et Git.
 
 Il n'existe pas d'inscription pour un administrateur. On s'inscrit comme un client, puis on change le rôle dans phpMyAdmin (table `utilisateur`, colonne `role`, valeur `admin`) ou en SQL :
 
-   UPDATE utilisateur SET role = 'admin' WHERE email = 'votre@email.fr';
+    UPDATE utilisateur SET role = 'admin' WHERE email = 'votre@email.fr';
 
 ## Sécurité
 
