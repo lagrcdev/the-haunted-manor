@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Entete from './components/Entete.jsx'
 import PiedDePage from './components/PiedDePage.jsx'
 import Accueil from './pages/Accueil.jsx'
@@ -18,6 +18,11 @@ import { envoyer } from './api.js'
 
 function App() {
   const [utilisateur, setUtilisateur] = useState(null)
+  const { key } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [key])
 
   useEffect(() => {
     fetch('/api/moi')

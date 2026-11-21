@@ -64,7 +64,8 @@ header, main, footer {
 
 header {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
   border-bottom: 2px solid var(--marron);
@@ -75,11 +76,33 @@ nav {
   gap: 1rem;
 }
 
+.bouton-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.75rem;
+  background: transparent;
+  border: 2px solid var(--texte);
+}
+
+.bouton-menu span {
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  background: var(--texte);
+}
+
 header nav {
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  align-items: stretch;
   gap: 0.5rem;
+  text-align: center;
+}
+
+header nav.ouvert {
+  display: flex;
 }
 
 header nav a, header nav button {
@@ -399,6 +422,26 @@ form button {
   border-radius: 0.25rem;
 }
 
+.mentions-legales, .confidentialite {
+  max-width: 50rem;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.mentions-legales h1, .confidentialite h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.mentions-legales h2, .confidentialite h2 {
+  margin-top: 2rem;
+  text-decoration: underline;
+}
+
+.confidentialite li {
+  margin-bottom: 0.5rem;
+}
+
 .espace-client, .admin {
   max-width: 50rem;
   margin: 0 auto;
@@ -470,6 +513,10 @@ form button {
 .formulaire-avis h2 {
   margin: 0 0 1rem;
   text-decoration: underline;
+}
+
+.formulaire-avis button {
+  align-self: center;
 }
 
 #note {
@@ -544,8 +591,8 @@ footer nav {
   gap: 0.5rem;
 }
 
-footer .telephone {
-  margin-top: 1rem;
+footer a {
+  text-decoration: none;
 }
 
 .droits {
@@ -553,9 +600,17 @@ footer .telephone {
 }
 
 @media (min-width: 768px) {
-  header {
+  .bouton-menu {
+    display: none;
+  }
+
+  header nav {
+    display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: auto;
   }
 
   .liste-chambres {

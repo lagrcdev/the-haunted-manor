@@ -51,7 +51,7 @@ function AdminReservations({ utilisateur }) {
 
   return (
     <section className="admin">
-      <h1>Toutes les réservations</h1>
+      <h1>Réservations</h1>
 
       {erreur && <p role="alert" className="erreur">{erreur}</p>}
 

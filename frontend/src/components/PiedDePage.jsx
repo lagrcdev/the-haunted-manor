@@ -10,6 +10,7 @@ function PiedDePage() {
             12 allée du Brouillard<br />
             00000 Brumeville
           </p>
+          <p>Tél. : 06 00 00 00 00</p>
           <p>contact@haunted-manor.example</p>
         </section>
 
@@ -20,14 +21,11 @@ function PiedDePage() {
           <Link to="/livre-d-or">Livre d'or</Link>
         </nav>
 
-        <div>
-          <nav aria-label="Informations légales">
-            <h2>Informations légales</h2>
-            <Link to="/mentions-legales">Mentions légales</Link>
-            <Link to="/confidentialite">Politique de confidentialité</Link>
-          </nav>
-          <p className="telephone">Tél. : 06 00 00 00 00</p>
-        </div>
+        <nav aria-label="Informations légales">
+          <h2>Informations légales</h2>
+          <Link to="/mentions-legales">Mentions légales</Link>
+          <Link to="/confidentialite">Politique de confidentialité</Link>
+        </nav>
       </div>
 
       <p className="droits">© {new Date().getFullYear()} The Haunted Manor - Projet fictif pour le titre DWWM</p>
