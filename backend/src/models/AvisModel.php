@@ -36,6 +36,7 @@ class AvisModel {
 
         $avis = [];
 
+        /** @var object $document */
         foreach ($curseur as $document) {
             $avis[] = [
                 'id' => (string) $document->_id,
