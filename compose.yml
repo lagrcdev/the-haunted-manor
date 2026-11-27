@@ -1,7 +1,13 @@
 services:
   web:
     build: ./backend
-    env_file: .env
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      MONGO_APP_USER: ${MONGO_APP_USER}
+      MONGO_APP_PASSWORD: ${MONGO_APP_PASSWORD}
     ports:
       - "8080:80"
     volumes:
@@ -32,6 +38,7 @@ services:
     env_file: .env
     volumes:
       - mongo_data:/data/db
+      - ./database/mongo/creation_utilisateur.js:/docker-entrypoint-initdb.d/01_creation_utilisateur.js
 
 volumes:
   db_data:

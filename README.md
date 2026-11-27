@@ -50,7 +50,7 @@ Il faut Docker Desktop, Node.js et Git.
 
        cp .env.example .env
 
-   `DB_USER` et `DB_PASSWORD` doivent correspondre à `MYSQL_USER` et `MYSQL_PASSWORD`.
+   `DB_USER` et `DB_PASSWORD` doivent correspondre à `MYSQL_USER` et `MYSQL_PASSWORD`. `MONGO_APP_USER` et `MONGO_APP_PASSWORD` sont les identifiants du compte limité que l'API utilise pour MongoDB : il est créé automatiquement au premier démarrage (les identifiants `MONGO_INITDB_ROOT_…` ne servent qu'à l'initialisation).
 
 3. Lancer le back-end et les bases de données :
 

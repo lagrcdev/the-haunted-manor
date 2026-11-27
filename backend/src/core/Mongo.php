@@ -5,11 +5,11 @@ class Mongo {
 
     public static function getManager(): MongoDB\Driver\Manager {
         if (self::$manager === null) {
-            $utilisateur = rawurlencode((string) getenv('MONGO_INITDB_ROOT_USERNAME'));
-            $motDePasse = rawurlencode((string) getenv('MONGO_INITDB_ROOT_PASSWORD'));
+            $utilisateur = rawurlencode((string) getenv('MONGO_APP_USER'));
+            $motDePasse = rawurlencode((string) getenv('MONGO_APP_PASSWORD'));
 
             self::$manager = new MongoDB\Driver\Manager(
-                'mongodb://' . $utilisateur . ':' . $motDePasse . '@mongo:27017/?authSource=admin'
+                'mongodb://' . $utilisateur . ':' . $motDePasse . '@mongo:27017/?authSource=haunted_manor'
             );
         }
 
