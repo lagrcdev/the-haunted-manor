@@ -65,6 +65,8 @@ function AdminChambres({ utilisateur }) {
     setDescription(chambre.description)
     setFrayeur(String(chambre.niveau_frayeur))
     setPrix(String(chambre.prix_nuit))
+    setPhoto(null)
+    setCleFichier((cle) => cle + 1)
   }
 
   async function enregistrer(evenement) {
@@ -147,7 +149,7 @@ function AdminChambres({ utilisateur }) {
 
           <div className="champ">
             <label htmlFor="prix">Prix par nuit (€)</label>
-            <input id="prix" type="number" min="1" step="0.01" value={prix} onChange={(e) => setPrix(e.target.value)} required />
+            <input id="prix" type="number" min="1" max="99999.99" step="0.01" value={prix} onChange={(e) => setPrix(e.target.value)} required />
           </div>
         </div>
 

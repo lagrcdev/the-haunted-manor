@@ -10,11 +10,11 @@ class ReservationController {
         $utilisateurId = Auth::exigerConnexion();
 
         $donnees = Requete::corps();
-        $chambreId = (int) ($donnees['chambre_id'] ?? 0);
+        $chambreId = $donnees['chambre_id'] ?? null;
         $arrivee = Requete::texte($donnees, 'date_arrivee');
         $depart = Requete::texte($donnees, 'date_depart');
 
-        if ($chambreId <= 0) {
+        if (!is_int($chambreId) || $chambreId <= 0) {
             Reponse::json(['erreur' => 'Chambre invalide'], 400);
         }
 

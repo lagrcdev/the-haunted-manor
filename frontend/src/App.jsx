@@ -18,6 +18,7 @@ import { envoyer } from './api.js'
 
 function App() {
   const [utilisateur, setUtilisateur] = useState(null)
+  const [erreurSession, setErreurSession] = useState('')
   const { key } = useLocation()
 
   useEffect(() => {
@@ -31,14 +32,27 @@ function App() {
   }, [])
 
   async function deconnecter() {
-    await envoyer('POST', '/api/deconnexion')
-    setUtilisateur(null)
+    setErreurSession('')
+
+    try {
+      const resultat = await envoyer('POST', '/api/deconnexion')
+
+      if (!resultat.ok) {
+        setErreurSession(resultat.corps?.erreur || 'Déconnexion refusée')
+        return
+      }
+
+      setUtilisateur(null)
+    } catch {
+      setErreurSession('Impossible de confirmer la déconnexion.')
+    }
   }
 
   return (
     <>
       <Entete utilisateur={utilisateur} onDeconnexion={deconnecter} />
       <main>
+        {erreurSession && <p role="alert" className="erreur">{erreurSession}</p>}
         <Routes>
           <Route path="/" element={<Accueil />} />
           <Route path="/chambres" element={<Chambres />} />

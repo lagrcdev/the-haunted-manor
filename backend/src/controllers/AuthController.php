@@ -12,15 +12,15 @@ class AuthController {
         $motDePasse = Requete::texte($donnees, 'mot_de_passe');
         $consentement = $donnees['consentement'] ?? false;
 
-        if ($nom === '' || strlen($nom) > 100) {
+        if ($nom === '' || mb_strlen($nom) > 100) {
             Reponse::json(['erreur' => 'Nom invalide'], 400);
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 100) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($email) > 100) {
             Reponse::json(['erreur' => 'Email invalide'], 400);
         }
 
-        if (strlen($motDePasse) < 12) {
+        if (mb_strlen($motDePasse) < 12) {
             Reponse::json(['erreur' => 'Le mot de passe doit faire 12 caractères minimum'], 400);
         }
 

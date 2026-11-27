@@ -30,11 +30,11 @@ class ChambreController {
         $niveauFrayeur = $donnees['niveau_frayeur'] ?? null;
         $prixNuit = $donnees['prix_nuit'] ?? null;
 
-        if ($nom === '' || strlen($nom) > 100) {
+        if ($nom === '' || mb_strlen($nom) > 100) {
             Reponse::json(['erreur' => 'Nom invalide'], 400);
         }
 
-        if ($fantome === '' || strlen($fantome) > 100) {
+        if ($fantome === '' || mb_strlen($fantome) > 100) {
             Reponse::json(['erreur' => 'Nom du fantôme invalide'], 400);
         }
 
@@ -46,8 +46,12 @@ class ChambreController {
             Reponse::json(['erreur' => 'Le niveau de frayeur doit être un nombre entier de 1 à 5'], 400);
         }
 
-        if (!is_numeric($prixNuit) || $prixNuit <= 0 || $prixNuit >= 100000) {
-            Reponse::json(['erreur' => 'Le prix doit être un nombre supérieur à 0'], 400);
+        if (!is_numeric($prixNuit) || $prixNuit < 1 || $prixNuit > 99999.99) {
+            Reponse::json(['erreur' => 'Le prix doit être compris entre 1 et 99999,99 €'], 400);
+        }
+
+        if (round((float) $prixNuit, 2) !== (float) $prixNuit) {
+            Reponse::json(['erreur' => 'Le prix ne peut pas avoir plus de deux décimales'], 400);
         }
 
         return [
