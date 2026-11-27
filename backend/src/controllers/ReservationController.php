@@ -60,8 +60,14 @@ class ReservationController {
     public static function annuler(int $id): void {
         $utilisateurId = Auth::exigerConnexion();
 
-        if (!ReservationModel::annuler($id, $utilisateurId)) {
+        $resultat = ReservationModel::annuler($id, $utilisateurId);
+
+        if ($resultat === 'introuvable') {
             Reponse::json(['erreur' => 'Réservation introuvable'], 404);
+        }
+
+        if ($resultat === 'commence') {
+            Reponse::json(['erreur' => 'Le séjour a déjà commencé : l\'annulation n\'est plus possible'], 409);
         }
 
         Reponse::json(['message' => 'Réservation annulée']);

@@ -74,8 +74,23 @@ class ReservationModel {
         return $requete->fetchAll();
     }
 
-    public static function annuler(int $id, int $utilisateurId): bool {
+    public static function annuler(int $id, int $utilisateurId): string {
         $pdo = Database::getConnexion();
+
+        $recherche = $pdo->prepare(
+            "SELECT date_arrivee FROM reservation
+             WHERE id = :id AND utilisateur_id = :utilisateur_id AND statut = 'confirmee'"
+        );
+        $recherche->execute(['id' => $id, 'utilisateur_id' => $utilisateurId]);
+        $reservation = $recherche->fetch();
+
+        if ($reservation === false) {
+            return 'introuvable';
+        }
+
+        if ($reservation['date_arrivee'] <= (new DateTime('today'))->format('Y-m-d')) {
+            return 'commence';
+        }
 
         $requete = $pdo->prepare(
             "UPDATE reservation SET statut = 'annulee'
@@ -83,7 +98,7 @@ class ReservationModel {
         );
         $requete->execute(['id' => $id, 'utilisateur_id' => $utilisateurId]);
 
-        return $requete->rowCount() > 0;
+        return $requete->rowCount() > 0 ? 'ok' : 'introuvable';
     }
 
     public static function annulerParAdmin(int $id): bool {

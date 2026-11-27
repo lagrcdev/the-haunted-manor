@@ -30,6 +30,30 @@ class ReservationTest extends TestApi {
         $this->assertSame(404, $annulation['code']);
     }
 
+    public function testUnClientPeutAnnulerUneReservationFuture(): void {
+        $reservation = $this->reserver(1, '2030-08-10', '2030-08-15');
+        $this->assertSame(201, $reservation['code']);
+
+        $annulation = $this->appeler('DELETE', '/api/reservations/' . $reservation['corps']['id']);
+        $this->assertSame(200, $annulation['code']);
+    }
+
+    public function testUnClientNePeutPasAnnulerUnSejourDejaCommence(): void {
+        $moi = $this->appeler('GET', '/api/moi');
+        $utilisateurId = $moi['corps']['id'];
+
+        $pdo = Database::getConnexion();
+        $insertion = $pdo->prepare(
+            "INSERT INTO reservation (utilisateur_id, chambre_id, date_arrivee, date_depart, prix_total)
+             VALUES (:utilisateur_id, 1, '2020-01-10', '2020-01-12', 238)"
+        );
+        $insertion->execute(['utilisateur_id' => $utilisateurId]);
+        $idReservation = (int) $pdo->lastInsertId();
+
+        $annulation = $this->appeler('DELETE', '/api/reservations/' . $idReservation);
+        $this->assertSame(409, $annulation['code']);
+    }
+
     public function testUneDateDArriveeDansLePasseEstRefusee(): void {
         $reponse = $this->reserver(1, '2020-01-10', '2020-01-12');
         $this->assertSame(400, $reponse['code']);

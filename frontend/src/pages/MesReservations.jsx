@@ -5,6 +5,7 @@ import { envoyer } from '../api.js'
 function MesReservations({ utilisateur }) {
   const [reservations, setReservations] = useState([])
   const [erreur, setErreur] = useState('')
+  const aujourdhui = new Date().toISOString().slice(0, 10)
 
   function charger() {
     fetch('/api/reservations')
@@ -70,7 +71,7 @@ function MesReservations({ utilisateur }) {
             <p>Du {reservation.date_arrivee} au {reservation.date_depart}</p>
             <p>Total : {reservation.prix_total} €</p>
             <p>Statut : {reservation.statut === 'confirmee' ? 'Confirmée' : 'Annulée'}</p>
-            {reservation.statut === 'confirmee' && (
+            {reservation.statut === 'confirmee' && reservation.date_arrivee > aujourdhui && (
               <button type="button" onClick={() => annuler(reservation.id)}>Annuler ma réservation</button>
             )}
           </div>
