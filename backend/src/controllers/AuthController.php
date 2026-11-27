@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../core/Reponse.php';
 require_once __DIR__ . '/../models/UtilisateurModel.php';
+require_once __DIR__ . '/../models/TentativeModel.php';
 require_once __DIR__ . '/../core/Requete.php';
 
 class AuthController {
@@ -43,11 +44,20 @@ class AuthController {
         $email = trim(Requete::texte($donnees, 'email'));
         $motDePasse = Requete::texte($donnees, 'mot_de_passe');
 
+        $emailSuivi = mb_substr($email, 0, 100);
+
+        if (TentativeModel::echecsRecents($emailSuivi) >= 5) {
+            Reponse::json(['erreur' => 'Trop de tentatives, réessayez dans 15 minutes'], 429);
+        }
+
         $utilisateur = UtilisateurModel::trouverParEmail($email);
 
         if ($utilisateur === null || !password_verify($motDePasse, $utilisateur['mot_de_passe'])) {
+            TentativeModel::enregistrerEchec($emailSuivi);
             Reponse::json(['erreur' => 'Email ou mot de passe incorrect'], 401);
         }
+
+        TentativeModel::effacer($emailSuivi);
 
         session_regenerate_id(true);
         $_SESSION['utilisateur_id'] = (int) $utilisateur['id'];

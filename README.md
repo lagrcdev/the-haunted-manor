@@ -76,7 +76,7 @@ Il n'existe pas d'inscription pour un administrateur. On s'inscrit comme un clie
 
 Les tests PHPUnit appellent l'API en marche : Docker doit donc être lancé (`docker compose up -d`).
 
-1. Lancer les tests PHPUnit (21 tests) :
+1. Lancer les tests PHPUnit (22 tests) :
 
        docker compose exec web vendor/bin/phpunit
 
@@ -100,6 +100,7 @@ Les tests PHPUnit appellent l'API en marche : Docker doit donc être lancé (`do
 - Mots de passe enregistrés sous forme de hash (`password_hash`).
 - Requêtes SQL préparées, sorties échappées côté React.
 - Jeton CSRF exigé pour toute requête qui modifie des données.
+- Connexion limitée : après 5 échecs pour une même adresse e-mail, nouvelles tentatives refusées pendant 15 minutes.
 - Sessions avec cookie HttpOnly, rôles client et administrateur vérifiés côté serveur.
 - Photos envoyées : type réel vérifié, JPG et PNG uniquement, 2 Mo maximum, nom choisi par le serveur, aucun script exécutable dans le dossier des photos.
 - Erreurs : le détail reste dans le journal du serveur, le visiteur ne voit qu'un message général.
@@ -108,6 +109,6 @@ Les tests PHPUnit appellent l'API en marche : Docker doit donc être lancé (`do
 
 - Les photos envoyées ne sont pas redimensionnées.
 - Une réservation est confirmée tout de suite, il n'y a pas de statut « en attente ».
-- Pas de limitation du nombre de tentatives de connexion.
+- La limitation des tentatives de connexion se fait par adresse e-mail (pas par adresse IP) : quelqu'un peut donc bloquer le compte d'un autre pendant 15 minutes.
 - Pas de bouton pour supprimer son compte.
 

@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/TestApi.php';
+require_once __DIR__ . '/../src/models/TentativeModel.php';
 
 class SecuriteTest extends TestApi {
     public function testUnMauvaisMotDePasseEstRefuse(): void {
@@ -10,6 +11,28 @@ class SecuriteTest extends TestApi {
         ]);
 
         $this->assertSame(401, $reponse['code']);
+
+        TentativeModel::effacer('inconnu@exemple.fr');
+    }
+
+    public function testApresCinqEchecsLaConnexionEstBloquee(): void {
+        $email = 'blocage-' . bin2hex(random_bytes(4)) . '@exemple.fr';
+
+        for ($essai = 1; $essai <= 5; $essai++) {
+            $reponse = $this->appeler('POST', '/api/connexion', [
+                'email' => $email,
+                'mot_de_passe' => 'unmauvaismotdepasse',
+            ]);
+            $this->assertSame(401, $reponse['code']);
+        }
+
+        $reponse = $this->appeler('POST', '/api/connexion', [
+            'email' => $email,
+            'mot_de_passe' => 'unmauvaismotdepasse',
+        ]);
+        $this->assertSame(429, $reponse['code']);
+
+        TentativeModel::effacer($email);
     }
 
     public function testUneRequeteSansJetonCsrfEstRefusee(): void {

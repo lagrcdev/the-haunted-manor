@@ -38,3 +38,11 @@ CREATE TABLE reservation (
   CONSTRAINT fk_reservation_chambre FOREIGN KEY (chambre_id) REFERENCES chambre (id),
   CONSTRAINT ck_reservation_dates CHECK (date_depart > date_arrivee)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE tentative_connexion (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  email VARCHAR(100) NOT NULL,
+  date_tentative DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_tentative_email_date (email, date_tentative)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
