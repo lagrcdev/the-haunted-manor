@@ -76,7 +76,7 @@ Il n'existe pas d'inscription pour un administrateur. On s'inscrit comme un clie
 
 Les tests PHPUnit appellent l'API en marche : Docker doit donc être lancé (`docker compose up -d`).
 
-1. Lancer les tests PHPUnit (22 tests) :
+1. Lancer les tests PHPUnit (23 tests) :
 
        docker compose exec web vendor/bin/phpunit
 

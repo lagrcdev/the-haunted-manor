@@ -63,6 +63,18 @@ class ChambreController {
         ];
     }
 
+    private static function supprimerFichierPhoto(?string $nom): void {
+        if ($nom === null || !preg_match('/^[0-9a-f]{32}\.(jpg|png)$/', $nom)) {
+            return;
+        }
+
+        $chemin = __DIR__ . '/../../public/uploads/' . $nom;
+
+        if (is_file($chemin)) {
+            unlink($chemin);
+        }
+    }
+
     public static function creer(): void {
         Auth::exigerAdmin();
 
@@ -88,7 +100,9 @@ class ChambreController {
     public static function supprimer(int $id): void {
         Auth::exigerAdmin();
 
-        if (ChambreModel::getById($id) === null) {
+        $chambre = ChambreModel::getById($id);
+
+        if ($chambre === null) {
             Reponse::json(['erreur' => 'Chambre introuvable'], 404);
         }
 
@@ -97,6 +111,7 @@ class ChambreController {
         }
 
         ChambreModel::supprimer($id);
+        self::supprimerFichierPhoto($chambre['photo']);
 
         Reponse::json(['message' => 'Chambre supprimée']);
     }
@@ -104,7 +119,9 @@ class ChambreController {
     public static function envoyerPhoto(int $id): void {
         Auth::exigerAdmin();
 
-        if (ChambreModel::getById($id) === null) {
+        $chambre = ChambreModel::getById($id);
+
+        if ($chambre === null) {
             Reponse::json(['erreur' => 'Chambre introuvable'], 404);
         }
 
@@ -136,6 +153,7 @@ class ChambreController {
         }
 
         ChambreModel::modifierPhoto($id, $nom);
+        self::supprimerFichierPhoto($chambre['photo']);
 
         Reponse::json(['photo' => $nom]);
     }
