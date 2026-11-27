@@ -169,7 +169,7 @@ function AdminChambres({ utilisateur }) {
         {idModif && <button type="button" onClick={vider}>Annuler la modification</button>}
       </form>
 
-      <h2>Gestion des chambres</h2>
+      <h1 className="titre-liste">Gestion des chambres</h1>
 
       {chambres.map((chambre) => (
         <article key={chambre.id} className="admin-chambre">
