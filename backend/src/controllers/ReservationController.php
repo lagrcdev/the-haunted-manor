@@ -4,6 +4,7 @@ require_once __DIR__ . '/../core/Reponse.php';
 require_once __DIR__ . '/../core/Requete.php';
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../models/ReservationModel.php';
+require_once __DIR__ . '/../domain/Sejour.php';
 
 class ReservationController {
     public static function creer(): void {
@@ -18,8 +19,8 @@ class ReservationController {
             Reponse::json(['erreur' => 'Chambre invalide'], 400);
         }
 
-        $dateArrivee = DateTime::createFromFormat('Y-m-d', $arrivee);
-        $dateDepart = DateTime::createFromFormat('Y-m-d', $depart);
+        $dateArrivee = DateTimeImmutable::createFromFormat('!Y-m-d', $arrivee);
+        $dateDepart = DateTimeImmutable::createFromFormat('!Y-m-d', $depart);
 
         if ($dateArrivee === false || $dateDepart === false
             || $dateArrivee->format('Y-m-d') !== $arrivee
@@ -27,15 +28,17 @@ class ReservationController {
             Reponse::json(['erreur' => 'Dates invalides'], 400);
         }
 
-        if ($dateArrivee < new DateTime('today')) {
+        if ($dateArrivee < new DateTimeImmutable('today')) {
             Reponse::json(['erreur' => 'La date d\'arrivée est déjà passée'], 400);
         }
 
-        if ($dateDepart <= $dateArrivee) {
+        try {
+            $sejour = new Sejour($dateArrivee, $dateDepart);
+        } catch (InvalidArgumentException $erreur) {
             Reponse::json(['erreur' => 'Le départ doit être après l\'arrivée'], 400);
         }
 
-        $resultat = ReservationModel::creer($utilisateurId, $chambreId, $arrivee, $depart);
+        $resultat = ReservationModel::creer($utilisateurId, $chambreId, $arrivee, $depart, $sejour->nombreDeNuits());
 
         if (!$resultat['ok']) {
             if ($resultat['raison'] === 'chambre_introuvable') {

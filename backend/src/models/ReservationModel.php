@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../core/Database.php';
 
 class ReservationModel {
-    public static function creer(int $utilisateurId, int $chambreId, string $arrivee, string $depart): array {
+    public static function creer(int $utilisateurId, int $chambreId, string $arrivee, string $depart, int $nuits): array {
         $pdo = Database::getConnexion();
         $pdo->beginTransaction();
 
@@ -35,7 +35,6 @@ class ReservationModel {
                 return ['ok' => false, 'raison' => 'indisponible'];
             }
 
-            $nuits = (new DateTime($arrivee))->diff(new DateTime($depart))->days;
             $prixTotal = round($nuits * (float) $chambre['prix_nuit'], 2);
 
             $requete = $pdo->prepare(
