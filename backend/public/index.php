@@ -15,7 +15,8 @@ set_exception_handler(function (Throwable $erreur) {
     Reponse::json(['erreur' => 'Erreur du serveur'], 500);
 });
 
-session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax']);
+$estEnHttps = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax', 'secure' => $estEnHttps]);
 session_start();
 
 $chemin = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
