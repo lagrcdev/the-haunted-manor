@@ -5,6 +5,7 @@ import { envoyer } from '../api.js'
 function AdminReservations({ utilisateur }) {
   const [reservations, setReservations] = useState([])
   const [erreur, setErreur] = useState('')
+  const [chargement, setChargement] = useState(true)
 
   function charger() {
     fetch('/api/admin/reservations')
@@ -16,6 +17,7 @@ function AdminReservations({ utilisateur }) {
       })
       .then((donnees) => setReservations(donnees))
       .catch(() => setErreur('Impossible de charger les réservations'))
+      .finally(() => setChargement(false))
   }
 
   useEffect(() => {
@@ -55,7 +57,9 @@ function AdminReservations({ utilisateur }) {
 
       {erreur && <p role="alert" className="erreur">{erreur}</p>}
 
-      {reservations.length === 0 && !erreur && <p>Aucune réservation.</p>}
+      {chargement && !erreur && <p>Chargement…</p>}
+
+      {!chargement && reservations.length === 0 && !erreur && <p>Aucune réservation.</p>}
 
       {reservations.map((reservation) => (
         <article key={reservation.id} className="reservation">

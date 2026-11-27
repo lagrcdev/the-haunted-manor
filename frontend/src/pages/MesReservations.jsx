@@ -5,6 +5,7 @@ import { envoyer } from '../api.js'
 function MesReservations({ utilisateur }) {
   const [reservations, setReservations] = useState([])
   const [erreur, setErreur] = useState('')
+  const [chargement, setChargement] = useState(true)
   const aujourdhui = new Date().toISOString().slice(0, 10)
 
   function charger() {
@@ -17,6 +18,7 @@ function MesReservations({ utilisateur }) {
       })
       .then((donnees) => setReservations(donnees))
       .catch(() => setErreur('Impossible de charger vos réservations'))
+      .finally(() => setChargement(false))
   }
 
   useEffect(() => {
@@ -52,7 +54,9 @@ function MesReservations({ utilisateur }) {
 
       {erreur && <p role="alert" className="erreur">{erreur}</p>}
 
-      {reservations.length === 0 && !erreur && <p>Vous n'avez pas encore de réservation.</p>}
+      {chargement && !erreur && <p>Chargement…</p>}
+
+      {!chargement && reservations.length === 0 && !erreur && <p>Vous n'avez pas encore de réservation.</p>}
 
       {reservations.map((reservation) => (
         <article key={reservation.id} className="reservation">

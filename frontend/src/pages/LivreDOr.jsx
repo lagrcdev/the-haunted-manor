@@ -11,6 +11,7 @@ function formaterDate(date) {
 function LivreDOr({ utilisateur }) {
   const [avis, setAvis] = useState([])
   const [erreur, setErreur] = useState('')
+  const [chargement, setChargement] = useState(true)
   const [note, setNote] = useState('')
   const [texte, setTexte] = useState('')
   const [erreurFormulaire, setErreurFormulaire] = useState('')
@@ -25,6 +26,7 @@ function LivreDOr({ utilisateur }) {
       })
       .then((donnees) => setAvis(donnees))
       .catch(() => setErreur('Impossible de charger le livre d\'or'))
+      .finally(() => setChargement(false))
   }
 
   useEffect(() => {
@@ -94,7 +96,9 @@ function LivreDOr({ utilisateur }) {
         <div className="livre-liste">
           {erreur &&<p role="alert" className="erreur">{erreur}</p>}
 
-          {avis.length === 0 && !erreur && <p>Aucun avis pour le moment.</p>}
+          {chargement && !erreur && <p>Chargement…</p>}
+
+          {!chargement && avis.length === 0 && !erreur && <p>Aucun avis pour le moment.</p>}
 
           {avis.map((unAvis) => (
             <article key={unAvis.id} className="avis">
