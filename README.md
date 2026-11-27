@@ -72,6 +72,29 @@ Il n'existe pas d'inscription pour un administrateur. On s'inscrit comme un clie
 
     UPDATE utilisateur SET role = 'admin' WHERE email = 'votre@email.fr';
 
+## Tests et qualité du code
+
+Les tests PHPUnit appellent l'API en marche : Docker doit donc être lancé (`docker compose up -d`).
+
+1. Lancer les tests PHPUnit (21 tests) :
+
+       docker compose exec web vendor/bin/phpunit
+
+2. Analyser le code PHP avec PHPStan :
+
+       docker compose exec web vendor/bin/phpstan analyse
+
+3. Vérifier le code React avec ESLint :
+
+       cd frontend
+       npm run lint
+
+4. Construire la version finale du site :
+
+       npm run build
+
+   Les fichiers produits sont dans `frontend/dist`.
+
 ## Sécurité
 
 - Mots de passe enregistrés sous forme de hash (`password_hash`).
